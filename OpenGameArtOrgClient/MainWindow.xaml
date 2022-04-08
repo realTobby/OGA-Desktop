@@ -1,0 +1,153 @@
+﻿<Window x:Class="OpenGameArtOrgClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OpenGameArtOrgClient"
+        mc:Ignorable="d"
+        Title="OpenGameArt-AssetClient" Height="450" Width="800" Closing="Window_Closing">
+    <Grid>
+
+        <TabControl>
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Popular Week"/>
+                </TabItem.Header>
+
+                <ListBox ItemsSource="{Binding PopularWeek}" SelectedItem="{Binding SelectedPopularWeekItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="ContextMenu">
+                                <Setter.Value>
+                                    <ContextMenu>
+                                        <MenuItem Header="Open Website..." Command="{Binding OpenWebsiteCommand}"/>
+                                        <MenuItem Header="Download..."/>
+                                    </ContextMenu>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        
+                        
+                        <DataTemplate>
+
+                            <Border BorderThickness="2" BorderBrush="Black" CornerRadius="2" Background="#716F81">
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="15,15,15,15" FontWeight="Bold"/>
+                                    <Image Source="{Binding ImageURL}" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" Margin="15,15,15,15" />
+
+                                    
+                                </StackPanel>
+                                
+                                
+                            </Border>
+                            
+                        </DataTemplate>
+
+                        
+
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    
+                    
+                </ListBox>
+
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Search"/>
+                </TabItem.Header>
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Text="What are you looking for?" HorizontalAlignment="Center" Margin="20,20,20,5"/>
+
+                        <TextBox Text="{Binding SearchString}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200"/>
+
+                        <Button Content="Search OpenGameArt.org" Margin="20,5,20,20" Height="20" Width="155" Click="Button_Click"/>
+
+                        <TextBlock Text="Page" HorizontalAlignment="Center"/>
+                        
+                        
+                        <DockPanel HorizontalAlignment="Center">
+                            <Button x:Name="btn_pageBack" Click="btn_pageBack_Click" Content="Back" Margin="0,0,20,0" Width="45"/>
+                            <TextBlock Text="{Binding CurrentPageCount}" HorizontalAlignment="Center"/>
+                            <Button x:Name="btn_pageNext" Click="btn_pageNext_Click" Content="Next" Margin="20,0,0,0" Width="45"/>
+                        </DockPanel>
+                        
+                        
+                    </StackPanel>
+
+                    <ListBox Grid.Row="1"  ItemsSource="{Binding SearchAssets}" SelectedItem="{Binding SelectedSearchAssetItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="2" BorderBrush="Black" CornerRadius="2" Background="#716F81">
+                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="15,15,15,15" FontWeight="Bold"/>
+                                        <Image Source="{Binding ImageURL}" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" Margin="15,15,15,15" />
+                                    </StackPanel>
+                                </Border>
+
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
+                    </ListBox>
+                    
+                </Grid>
+                
+            </TabItem>
+
+            <TabItem IsEnabled="False">
+                <TabItem.Header>
+                    <TextBlock Text="Random Asset"/>
+                </TabItem.Header>
+
+                <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="23" Content="Open Random Asset"/>
+
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Settings"/>
+                </TabItem.Header>
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <TextBlock Text="Download Directory"/>
+                    <DockPanel>
+                        <TextBox Width="300" IsEnabled="False" Text="{Binding DownloadDirectory}"/>
+                        <Button x:Name="btn_setDownloadDirectory" Click="btn_setDownloadDirectory_Click" Width="50" Content="..." Margin="20,0,0,0"/>
+                    </DockPanel>
+
+                </StackPanel>
+
+            </TabItem>
+
+            
+            
+        </TabControl>
+        
+        
+        
+        
+    </Grid>
+</Window>
