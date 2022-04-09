@@ -186,6 +186,24 @@
 
             </TabItem>
 
+            <TabItem>
+
+                <TabItem.Header>
+                    <TextBlock Text="About"/>
+                </TabItem.Header>
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock  Text="Made by realTobby aka kordesii" HorizontalAlignment="Center"/>
+                    <TextBlock  Text="Was made for the Tool-Jam-2022" HorizontalAlignment="Center"/>
+                    <TextBlock  Text="Please support OpenGameArt.org when you can!" HorizontalAlignment="Center"/>
+                    <TextBlock  Text="This is in no way, shape or form affiliated with OpenGameArt.org" HorizontalAlignment="Center"/>
+                    <TextBlock  Text="Educational Purpose only!" HorizontalAlignment="Center"/>
+                </StackPanel>
+                
+                
+
+            </TabItem>
+
             
             
         </TabControl>
