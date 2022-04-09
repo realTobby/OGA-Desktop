@@ -2,6 +2,7 @@
 using OpenGameArtOrgClient.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -100,7 +101,7 @@ namespace OpenGameArtOrgClient
                 List<AssetFile> assetDownloads = new List<AssetFile>();
 
                 string assetName = assetPost.Name;
-
+                
                 HtmlDocument assetPage = GetDocument(assetPost.PageURL);
 
                 HtmlNode fileRoot = assetPage.DocumentNode.SelectSingleNode("//div[@class='" + "field field-name-field-art-files field-type-file field-label-above" + "']").ChildNodes[1];
@@ -117,6 +118,15 @@ namespace OpenGameArtOrgClient
                     assetDownloads.Add(asset);
                 }
 
+                System.IO.Directory.CreateDirectory(System.IO.Path.Combine(DOWNLOAD_DIRECTORY, assetName));
+
+                using (StreamWriter writer = new StreamWriter(System.IO.Path.Combine(DOWNLOAD_DIRECTORY, assetName, "Original Post " + assetName + ".url")))
+                {
+                    writer.WriteLine("[InternetShortcut]");
+                    writer.WriteLine("URL=" + assetPost.PageURL);
+                    writer.Flush();
+                }
+
                 using (WebClient client = new WebClient())
                 {
                     foreach (AssetFile asset in assetDownloads)
@@ -124,7 +134,7 @@ namespace OpenGameArtOrgClient
                         // DOWNLOAD!!!!
                         string path = System.IO.Path.Combine(DOWNLOAD_DIRECTORY, assetName, asset.Name);
                         
-                        System.IO.Directory.CreateDirectory(System.IO.Path.Combine(DOWNLOAD_DIRECTORY, assetName));
+                        
 
                         client.DownloadFile(asset.DirectURL, path);
 
@@ -134,6 +144,8 @@ namespace OpenGameArtOrgClient
                             client.DownloadFile(assetPost.ImageURL, thumbnailPath);
                         }
                         
+                        
+
 
                     }
 
@@ -145,9 +157,5 @@ namespace OpenGameArtOrgClient
 
 
         }
-
-
-        
-
     }
 }

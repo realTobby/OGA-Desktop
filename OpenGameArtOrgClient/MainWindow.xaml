@@ -22,6 +22,7 @@
                                 <Setter.Value>
                                     <ContextMenu>
                                         <MenuItem Header="Open Asset folder..." Command="{Binding OpenAssetFolderCommand}"/>
+                                        <MenuItem Header="Asset-Viewer" IsEnabled="False"/>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>

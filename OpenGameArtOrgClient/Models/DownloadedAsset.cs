@@ -16,6 +16,11 @@ namespace OpenGameArtOrgClient.Models
 
         public ICommand OpenAssetFolderCommand { get; set; } = null;
 
+        public DownloadedAsset()
+        {
+            InitRelayCommands();
+        }
+
         private void InitRelayCommands()
         {
             OpenAssetFolderCommand = new Commands.RelayCommand(o => { OpenAssetFolder(o); }, o => true);
