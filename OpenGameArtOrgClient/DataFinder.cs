@@ -120,7 +120,7 @@ namespace OpenGameArtOrgClient
 
                 System.IO.Directory.CreateDirectory(System.IO.Path.Combine(DOWNLOAD_DIRECTORY, assetName));
 
-                using (StreamWriter writer = new StreamWriter(System.IO.Path.Combine(DOWNLOAD_DIRECTORY, assetName, "Original Post " + assetName + ".url")))
+                using (StreamWriter writer = new StreamWriter(System.IO.Path.Combine(DOWNLOAD_DIRECTORY, assetName, "[Original Link] " + assetName + ".url")))
                 {
                     writer.WriteLine("[InternetShortcut]");
                     writer.WriteLine("URL=" + assetPost.PageURL);
