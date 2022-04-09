@@ -1,6 +1,10 @@
-﻿using OpenGameArtOrgClient.ViewModels;
-using OpenGameArtOrgData;
+﻿using OpenGameArtOrgClient.Models;
+using OpenGameArtOrgClient.ViewModels;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace OpenGameArtOrgClient
 {
@@ -17,18 +21,61 @@ namespace OpenGameArtOrgClient
 
         public MainWindow()
         {
-            _dataFinder = new DataFinder();
+            
             _viewModel = new MainWindowViewModel();
+            this.DataContext = _viewModel;
 
             LoadSettingsFile();
 
-            
-            this.DataContext = _viewModel;
+            _dataFinder = new DataFinder(_viewModel.DownloadDirectory);
+
+
+            _viewModel.PropertyChanged += CheckDownloadDirectoyChanged;
+
+
 
             InitializeComponent();
 
             ShowPopularOfWeek();
 
+        }
+
+        private void LoadDownloadedAssets()
+        {
+            _viewModel.DownloadedAssets.Clear();
+
+            if(System.IO.Directory.Exists(_viewModel.DownloadDirectory))
+            {
+                string[] assetFolder = System.IO.Directory.GetDirectories(_viewModel.DownloadDirectory);
+                foreach(string assetRootPath in assetFolder)
+                {
+                    string assetName = System.IO.Path.GetFileName(assetRootPath);
+
+                    string[] assets = System.IO.Directory.GetFiles(assetRootPath);
+
+                    assetName = assetName + " (Files: " + (assets.Length-1) + ")";
+
+                    string thumbnailPath = System.IO.Path.Combine(assetRootPath, "thumbnail.png");
+
+                    DownloadedAsset dAsset = new DownloadedAsset();
+                    dAsset.FolderPath = assetRootPath;
+                    dAsset.AssetName = assetName;
+
+                    if (System.IO.File.Exists(thumbnailPath))
+                        dAsset.ThumbnailPath = thumbnailPath;
+
+                    _viewModel.DownloadedAssets.Add(dAsset);
+
+                }
+            }
+        }
+
+        private void CheckDownloadDirectoyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(_viewModel.DownloadDirectory))
+            {
+                _dataFinder.DOWNLOAD_DIRECTORY = _viewModel.DownloadDirectory;
+            }
         }
 
         private void LoadSettingsFile()
@@ -70,12 +117,12 @@ namespace OpenGameArtOrgClient
 
         private void ShowPopularOfWeek()
         {
-            _viewModel.PopularWeek = new System.Collections.ObjectModel.ObservableCollection<OpenGameArtOrgData.Models.PostThumbnail>(_dataFinder.GetPopularWeek());
+            _viewModel.PopularWeek = new System.Collections.ObjectModel.ObservableCollection<PostThumbnail>(_dataFinder.GetPopularWeek());
         }
 
         private void SearchAssets()
         {
-            _viewModel.SearchAssets = new System.Collections.ObjectModel.ObservableCollection<OpenGameArtOrgData.Models.PostThumbnail>(_dataFinder.Search(_viewModel.SearchString, _viewModel.CurrentPageCount));
+            _viewModel.SearchAssets = new System.Collections.ObjectModel.ObservableCollection<PostThumbnail>(_dataFinder.Search(_viewModel.SearchString, _viewModel.CurrentPageCount));
         }
 
         private void CleanAssetSearch()
@@ -115,6 +162,32 @@ namespace OpenGameArtOrgClient
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Asset: " + _viewModel.SelectedPopularWeekItem.Name);
+        }
+
+        private void btn_openDownloadDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.IO.Directory.Exists(_viewModel.DownloadDirectory))
+            {
+                System.Diagnostics.Process.Start(new ProcessStartInfo
+                {
+                    FileName = _viewModel.DownloadDirectory,
+                    UseShellExecute = true
+                });
+            }
+            else
+                MessageBox.Show("Looks like I cannot find your download directory...You sure you correctly entered it?");
+
+            
+        }
+
+        private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if(e.OriginalSource is TabControl)
+            {
+                TabControl tabControl = (TabControl)e.OriginalSource as TabControl;
+                if (tabControl.SelectedIndex == 0)
+                    LoadDownloadedAssets();
+            }
         }
     }
 }

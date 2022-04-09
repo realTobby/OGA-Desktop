@@ -8,8 +8,45 @@
         Title="OpenGameArt-AssetClient" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
 
-        <TabControl>
+        <TabControl SelectionChanged="TabControl_SelectionChanged">
 
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Downloaded Assets"/>
+                </TabItem.Header>
+
+                <ListBox Grid.Row="1"  ItemsSource="{Binding DownloadedAssets}" SelectedItem="{Binding SelectedDownloadedAsset}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="ContextMenu">
+                                <Setter.Value>
+                                    <ContextMenu>
+                                        <MenuItem Header="Open Asset folder..." Command="{Binding OpenAssetFolderCommand}"/>
+                                    </ContextMenu>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderThickness="2" BorderBrush="Black" CornerRadius="2" Background="#716F81">
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding AssetName}" HorizontalAlignment="Center" Margin="15,15,15,15" FontWeight="Bold"/>
+                                    <Image Source="{Binding ThumbnailPath}" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" Margin="15,15,15,15" />
+                                </StackPanel>
+                            </Border>
+
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                </ListBox>
+            </TabItem>
+            
             <TabItem>
                 <TabItem.Header>
                     <TextBlock Text="Popular Week"/>
@@ -22,7 +59,7 @@
                                 <Setter.Value>
                                     <ContextMenu>
                                         <MenuItem Header="Open Website..." Command="{Binding OpenWebsiteCommand}"/>
-                                        <MenuItem Header="Download..."/>
+                                        <MenuItem Header="Download..." Command="{Binding DownloadAssetCommand}"/>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>
@@ -92,7 +129,18 @@
                     </StackPanel>
 
                     <ListBox Grid.Row="1"  ItemsSource="{Binding SearchAssets}" SelectedItem="{Binding SelectedSearchAssetItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" VerticalAlignment="Center">
-
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu>
+                                            <MenuItem Header="Open Website..." Command="{Binding OpenWebsiteCommand}"/>
+                                            <MenuItem Header="Download..." Command="{Binding DownloadAssetCommand}"/>
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="2" BorderBrush="Black" CornerRadius="2" Background="#716F81">
@@ -116,14 +164,7 @@
                 
             </TabItem>
 
-            <TabItem IsEnabled="False">
-                <TabItem.Header>
-                    <TextBlock Text="Random Asset"/>
-                </TabItem.Header>
-
-                <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="23" Content="Open Random Asset"/>
-
-            </TabItem>
+            
 
             <TabItem>
                 <TabItem.Header>
@@ -137,6 +178,8 @@
                         <TextBox Width="300" IsEnabled="False" Text="{Binding DownloadDirectory}"/>
                         <Button x:Name="btn_setDownloadDirectory" Click="btn_setDownloadDirectory_Click" Width="50" Content="..." Margin="20,0,0,0"/>
                     </DockPanel>
+
+                    <Button Width="200" Margin="20,20,20,20" Content="Open Download Directory" x:Name="btn_openDownloadDirectory" Click="btn_openDownloadDirectory_Click"/>
 
                 </StackPanel>
 

@@ -1,16 +1,17 @@
-﻿using OpenGameArtOrgData.Models;
-using System;
-using System.Collections.Generic;
+﻿using OpenGameArtOrgClient.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace OpenGameArtOrgClient.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        public MainWindowViewModel()
+        {
+
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private void OnProperyChanged(string name)
@@ -18,19 +19,26 @@ namespace OpenGameArtOrgClient.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private ObservableCollection<PostThumbnail> _popularWeek;
-        private PostThumbnail _selectedPopularWeekItem;
+        private ObservableCollection<PostThumbnail> _popularWeek = new ObservableCollection<PostThumbnail>();
+        private PostThumbnail _selectedPopularWeekItem = new PostThumbnail();
 
 
         private string _searchString = string.Empty;
 
-        private ObservableCollection<PostThumbnail> _searchAssets;
-        private PostThumbnail _selectedSearchAssetItem;
+        private ObservableCollection<PostThumbnail> _searchAssets = new ObservableCollection<PostThumbnail>();
+        private PostThumbnail _selectedSearchAssetItem = new PostThumbnail();
+
+
+        private ObservableCollection<DownloadedAsset> _downloadedAssets = new ObservableCollection<DownloadedAsset>();
+        private DownloadedAsset _selectedDownloadedAsset = new DownloadedAsset();
 
         private int _currentPageCount = 0;
 
         private string _downloadDirectory = string.Empty;
 
+
+
+        
 
         public ObservableCollection<PostThumbnail> PopularWeek
         {
@@ -140,6 +148,38 @@ namespace OpenGameArtOrgClient.ViewModels
                 {
                     _selectedSearchAssetItem = value;
                     OnProperyChanged(nameof(SelectedSearchAssetItem));
+                }
+            }
+        }
+
+        public ObservableCollection<DownloadedAsset> DownloadedAssets
+        {
+            get
+            {
+                return _downloadedAssets;
+            }
+            set
+            {
+                if(_downloadedAssets != value)
+                {
+                    _downloadedAssets = value;
+                    OnProperyChanged(nameof(DownloadedAssets));
+                }
+            }
+        }
+
+        public DownloadedAsset SelectedDownloadedAsset
+        {
+            get
+            {
+                return _selectedDownloadedAsset;
+            }
+            set
+            {
+                if(_selectedDownloadedAsset != value)
+                {
+                    _selectedDownloadedAsset = value;
+                    OnProperyChanged(nameof(SelectedDownloadedAsset));
                 }
             }
         }
