@@ -22,6 +22,8 @@ namespace OpenGameArtOrgClient.Models
         public string SourceURL { get; set; } = string.Empty;
         public string ImageURL { get; set; } = string.Empty;
 
+        public bool IsChallengeAsset = false;
+
         public ICommand OpenWebsiteCommand { get; set; } = null;
         public ICommand DownloadAssetCommand { get; set; } = null;
 

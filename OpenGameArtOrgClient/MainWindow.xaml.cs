@@ -25,6 +25,8 @@ namespace OpenGameArtOrgClient
             _viewModel = new MainWindowViewModel();
             this.DataContext = _viewModel;
 
+            
+
             LoadSettingsFile();
 
             _dataFinder = new DataFinder(_viewModel.DownloadDirectory);
@@ -35,6 +37,8 @@ namespace OpenGameArtOrgClient
 
 
             InitializeComponent();
+
+            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(_viewModel.DownloadDirectory, "Challenges"));
 
             ShowPopularOfWeek();
 
@@ -188,6 +192,71 @@ namespace OpenGameArtOrgClient
                 if (tabControl.SelectedIndex == 0)
                     LoadDownloadedAssets();
             }
+        }
+
+        private void TextBlock_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://itch.io/jam/the-tool-jam-2",
+                UseShellExecute = true
+            });
+        }
+        private void TextBlock1_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/realTobby/OGA-Desktop",
+                UseShellExecute = true
+            });
+        }
+
+        private void btn_generateAssetsToUse_Click(object sender, RoutedEventArgs e)
+        {
+            //_viewModel.ChallengeAssets = _viewModel.DownloadedAssets;
+
+
+            _viewModel.ChallengeAssets = new System.Collections.ObjectModel.ObservableCollection<PostThumbnail>(_dataFinder.GetChallengeAssets());
+
+
+
+        }
+
+        private void btn_openChallengeAssets_Click(object sender, RoutedEventArgs e)
+        {
+            // create folder from ChallengeAssets
+            // openfolder for user
+
+            int challengeCount = System.IO.Directory.GetDirectories(System.IO.Path.Combine(_viewModel.DownloadDirectory, "Challenges")).Length;
+            challengeCount++;
+
+            string challengeDirectory = System.IO.Path.Combine(_viewModel.DownloadDirectory, "Challenges", "challenge-" + challengeCount);
+
+            System.IO.Directory.CreateDirectory(challengeDirectory);
+
+            _dataFinder.CurrentChallengeDirectory = challengeDirectory;
+
+            foreach (var item in _viewModel.ChallengeAssets)
+            {
+                item.DownloadAssetCommand.Execute(item);
+            }
+
+
+            if (System.IO.Directory.Exists(challengeDirectory))
+            {
+                System.Diagnostics.Process.Start(new ProcessStartInfo
+                {
+                    FileName = challengeDirectory,
+                    UseShellExecute = true
+                });
+            }
+            else
+                MessageBox.Show("Something went wrong while gathering the files, maybe try again? :)");
+           
+
+
         }
     }
 }

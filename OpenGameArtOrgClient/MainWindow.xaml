@@ -15,7 +15,7 @@
                     <TextBlock Text="Downloaded Assets"/>
                 </TabItem.Header>
 
-                <ListBox Grid.Row="1"  ItemsSource="{Binding DownloadedAssets}" SelectedItem="{Binding SelectedDownloadedAsset}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ListBox Grid.Row="1" ItemsSource="{Binding DownloadedAssets}" SelectedItem="{Binding SelectedDownloadedAsset}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="ContextMenu">
@@ -194,16 +194,73 @@
 
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock  Text="Made by realTobby aka kordesii" HorizontalAlignment="Center"/>
-                    <TextBlock  Text="Was made for the Tool-Jam-2022" HorizontalAlignment="Center"/>
+                    <TextBlock  Text="Was made for the Tool-Jam-2" HorizontalAlignment="Center"/>
+
+                    <TextBlock   Hyperlink.Click="TextBlock_Click" HorizontalAlignment="Center">
+                        <Hyperlink>
+                            <TextBlock Text="https://itch.io/jam/the-tool-jam-2"/>
+                        </Hyperlink>
+                    </TextBlock>
                     <TextBlock  Text="Please support OpenGameArt.org when you can!" HorizontalAlignment="Center"/>
                     <TextBlock  Text="This is in no way, shape or form affiliated with OpenGameArt.org" HorizontalAlignment="Center"/>
                     <TextBlock  Text="Educational Purpose only!" HorizontalAlignment="Center"/>
+
+                    <TextBlock   Hyperlink.Click="TextBlock1_Click" HorizontalAlignment="Center">
+                        <Hyperlink>
+                            <TextBlock Text="https://github.com/realTobby/OGA-Desktop"/>
+                        </Hyperlink>
+                    </TextBlock>
                 </StackPanel>
                 
                 
 
             </TabItem>
 
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Game Challenge"/>
+                </TabItem.Header>
+
+                <StackPanel>
+                    <Button x:Name="btn_generateAssetsToUse" Click="btn_generateAssetsToUse_Click" Content="Randomly pick 5 Assets to make a game"/>
+
+                    <ListBox Grid.Row="1"  ItemsSource="{Binding ChallengeAssets}" SelectedItem="{Binding SelectedChallengeAssetItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu>
+                                            <MenuItem Header="Open Website..." Command="{Binding OpenWebsiteCommand}"/>
+                                            <MenuItem Header="Download..." Command="{Binding DownloadAssetCommand}"/>
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="2" BorderBrush="Black" CornerRadius="2" Background="#716F81">
+                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="15,15,15,15" FontWeight="Bold"/>
+                                        <Image Source="{Binding ImageURL}" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" Margin="15,15,15,15" />
+                                    </StackPanel>
+                                </Border>
+
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
+                    </ListBox>
+
+                    <Button x:Name="btn_openChallengeAssets" Click="btn_openChallengeAssets_Click" Content="Create Challenge Asset Package"/>
+
+                </StackPanel>
+                
+            </TabItem>
             
             
         </TabControl>

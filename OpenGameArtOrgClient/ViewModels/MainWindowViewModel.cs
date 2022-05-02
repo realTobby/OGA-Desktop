@@ -32,12 +32,46 @@ namespace OpenGameArtOrgClient.ViewModels
         private ObservableCollection<DownloadedAsset> _downloadedAssets = new ObservableCollection<DownloadedAsset>();
         private DownloadedAsset _selectedDownloadedAsset = new DownloadedAsset();
 
+        private ObservableCollection<PostThumbnail> _challengeAssets = new ObservableCollection<PostThumbnail>();
+        private PostThumbnail _selectedChallengeAssetItem = new PostThumbnail();
+
+
         private int _currentPageCount = 0;
 
         private string _downloadDirectory = string.Empty;
 
 
+        public PostThumbnail SelectedChallengeAssetItem
+        {
+            get
+            {
+                return _selectedChallengeAssetItem;
+            }
+            set
+            {
+                if(_selectedChallengeAssetItem != value)
+                {
+                    _selectedChallengeAssetItem = value;
+                    OnProperyChanged(nameof(SelectedChallengeAssetItem));
+                }
+            }
+        }
 
+        public ObservableCollection<PostThumbnail> ChallengeAssets
+        {
+            get
+            {
+                return _challengeAssets;
+            }
+            set
+            {
+                if (_challengeAssets != value)
+                {
+                    _challengeAssets = value;
+                    OnProperyChanged(nameof(ChallengeAssets));
+                }
+            }
+        }
         
 
         public ObservableCollection<PostThumbnail> PopularWeek
